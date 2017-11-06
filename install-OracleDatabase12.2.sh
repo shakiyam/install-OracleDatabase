@@ -9,6 +9,6 @@ fi
 sudo yum -y install git unzip
 
 git clone https://github.com/shakiyam/vagrant-oracle12.2
-cd vagrant-oracle12.1
+cd vagrant-oracle12.2
 unzip "${MEDIA}/linuxx64_12201_database.zip"
 sudo ./setup.sh

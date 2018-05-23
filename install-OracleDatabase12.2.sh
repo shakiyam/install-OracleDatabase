@@ -4,6 +4,9 @@ set -eu -o pipefail
 if [ -e .env ]; then
   # shellcheck disable=SC1091
   . .env
+else
+  echo 'Environment file .env not found.'
+  exit 1
 fi
 
 sudo yum -y install git unzip

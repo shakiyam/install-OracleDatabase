@@ -1,11 +1,8 @@
 #!/bin/bash
 set -eu -o pipefail
 
-if [ -e .env ]; then
-  # shellcheck disable=SC1091
-  . .env
-else
-  echo 'Environment file .env not found.'
+if [[ -z "${MEDIA:-}" ]]; then
+  echo "MEDIA is not defined."
   exit 1
 fi
 

@@ -9,9 +9,13 @@ else
   exit 1
 fi
 
-sudo yum -y install git unzip
+sudo yum -y install unzip
 
-git clone https://github.com/shakiyam/vagrant-oracle12.2
-cd vagrant-oracle12.2
-unzip "${MEDIA}/linuxx64_12201_database.zip"
+readonly TEMP_DIR=$(mktemp -d)
+chmod 755 "$TEMP_DIR"
+curl -sSL https://github.com/shakiyam/vagrant-oracle12.2/archive/master.tar.gz \
+  | tar xzf - -C "$TEMP_DIR" --strip=1
+unzip "${MEDIA}/linuxx64_12201_database.zip" -d "$TEMP_DIR"
+cd "$TEMP_DIR"
 sudo ./setup.sh
+rm -rf "$TEMP_DIR"

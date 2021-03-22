@@ -3,7 +3,8 @@ install-OracleDatabase
 
 Installation scripts for Oracle Database.
 
-## Target Oracle Database and Installation scripts ##
+Target Oracle Database and Installation scripts
+-----------------------------------------------
 
 * Oracle Database 12c Release 2 (12.2.0.1) Enterprise Edition
   + install-OracleDatabase12.2.sh
@@ -12,7 +13,8 @@ Installation scripts for Oracle Database.
 * Oracle Database 11g Release 2 (11.2.0.1) Enterprise Edition
   + install-OracleDatabase11.2.sh
 
-## Requirements
+Requirements
+------------
 
 Installation scripts support for Oracle Linux Server 6 and Oracle Linux Server 7.
 
@@ -27,12 +29,14 @@ You have to download the installation binaries of Oracle Database from the [Orac
   + linux.x64_11gR2_database_1of2.zip
   + linux.x64_11gR2_database_2of2.zip
 
-You have to make sure to have internet connectivity for yum.
+Internet access is required to install the software from GitHub and Oracle Linux Yum Server.
 
-## Author ##
+Author
+------
 
 [Shinichi Akiyama](https://github.com/shakiyam)
 
-## License ##
+License
+-------
 
-[MIT License](http://www.opensource.org/licenses/mit-license.php)
+[MIT License](https://opensource.org/licenses/MIT)

@@ -6,14 +6,23 @@ if [[ -z "${MEDIA:-}" ]]; then
   exit 1
 fi
 
+declare -r -a FILES=("$MEDIA/p13390677_112040_Linux-x86-64_1of7.zip" "$MEDIA/p13390677_112040_Linux-x86-64_2of7.zip")
+
+for file in "${FILES[@]}"; do
+  if [[ ! -f "$file" ]]; then
+    echo "File not found"
+    exit 1
+  fi
+done
+
 sudo yum -y install unzip
 
-readonly TEMP_DIR=$(mktemp -d)
+TEMP_DIR=$(mktemp -d)
+readonly TEMP_DIR
 chmod 755 "$TEMP_DIR"
 curl -sSL https://github.com/shakiyam/vagrant-oracle11.2/archive/master.tar.gz \
   | tar xzf - -C "$TEMP_DIR" --strip=1
-unzip "${MEDIA}/linux.x64_11gR2_database_1of2.zip" -d "$TEMP_DIR"
-unzip "${MEDIA}/linux.x64_11gR2_database_2of2.zip" -d "$TEMP_DIR"
+printf "%s\n" "${FILES[@]}" | xargs -I{} unzip {} -d "$TEMP_DIR"
 pushd "$TEMP_DIR"
 sudo ./setup.sh
 popd

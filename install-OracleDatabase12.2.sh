@@ -6,13 +6,23 @@ if [[ -z "${MEDIA:-}" ]]; then
   exit 1
 fi
 
+declare -r -a FILES=("$MEDIA/V839960-01.zip")
+
+for file in "${FILES[@]}"; do
+  if [[ ! -f "$file" ]]; then
+    echo "File not found"
+    exit 1
+  fi
+done
+
 sudo yum -y install unzip
 
-readonly TEMP_DIR=$(mktemp -d)
+TEMP_DIR=$(mktemp -d)
+readonly TEMP_DIR
 chmod 755 "$TEMP_DIR"
 curl -sSL https://github.com/shakiyam/vagrant-oracle12.2/archive/master.tar.gz \
   | tar xzf - -C "$TEMP_DIR" --strip=1
-unzip "${MEDIA}/linuxx64_12201_database.zip" -d "$TEMP_DIR"
+printf "%s\n" "${FILES[@]}" | xargs -I{} unzip {} -d "$TEMP_DIR"
 pushd "$TEMP_DIR"
 sudo ./setup.sh
 popd

@@ -18,7 +18,7 @@ Requirements
 
 Installation scripts support for Oracle Linux Server 7.
 
-You have to download the installation binaries of Oracle Database from My Oracle Support and put them into the $MEDIA folder. (You can set environment variable $MEDIA to whatever you like.)
+Download the Oracle Database installation binary from [My Oracle Support](https://support.oracle.com/) or [Oracle Software Delivery Cloud](https://edelivery.oracle.com/). Then place the downloaded file in the $MEDIA folder. (You can set the environment variable $MEDIA to any value you like.)
 
 * Oracle Database 12c Release 2 (12.2.0.1)
   + V839960-01.zip

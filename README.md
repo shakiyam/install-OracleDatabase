@@ -7,11 +7,11 @@ Target Oracle Database and Installation scripts
 -----------------------------------------------
 
 * Oracle Database 12c Release 2 (12.2.0.1)
-  + install-OracleDatabase12.2.sh
+  + install-OracleDatabase12.2/provision.sh
 * Oracle Database 12c Release 1 (12.1.0.2) Enterprise Edition
-  + install-OracleDatabase12.1.sh
+  + install-OracleDatabase12.1/provision.sh
 * Oracle Database 11g Release 2 (11.2.0.4) Standard / Enterprise Edition
-  + install-OracleDatabase11.2.sh
+  + install-OracleDatabase11.2/provision.sh
 
 Requirements
 ------------

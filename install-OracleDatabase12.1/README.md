@@ -25,6 +25,7 @@ Set environment variables
 Copy the file `dotenv.sample` to a file named `.env` and rewrite the contents as needed.
 
 ```shell
+MEDIA=/mnt
 ORACLE_BASE=/u01/app/oracle
 ORACLE_CHARACTERSET=AL32UTF8
 ORACLE_HOME=/u01/app/oracle/product/12.1.0.2/dbhome_1

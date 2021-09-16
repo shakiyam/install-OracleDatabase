@@ -22,12 +22,6 @@ if [[ ! -f "$FILE" ]]; then
   exit 1
 fi
 
-sudo yum -y install unzip
-
-TEMP_DIR=$(mktemp -d)
-readonly TEMP_DIR
-chmod 755 "$TEMP_DIR"
-
 # Install Oracle Preinstallation RPM
 sudo yum -y install oracle-database-preinstall-18c
 
@@ -59,6 +53,10 @@ esac
 
 # Set oracle password
 echo oracle:"$ORACLE_PASSWORD" | sudo chpasswd
+
+TEMP_DIR=$(mktemp -d)
+readonly TEMP_DIR
+chmod 755 "$TEMP_DIR"
 
 # Install Mo (https://github.com/tests-always-included/mo)
 curl -sSL https://git.io/get-mo | sudo tee /usr/local/bin/mo >/dev/null

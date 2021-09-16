@@ -25,14 +25,6 @@ for file in "${FILES[@]}"; do
   fi
 done
 
-sudo yum -y install unzip
-
-# Unzip downloaded files
-TEMP_DIR=$(mktemp -d)
-readonly TEMP_DIR
-chmod 755 "$TEMP_DIR"
-printf "%s\n" "${FILES[@]}" | xargs -I{} unzip {} -d "$TEMP_DIR"
-
 # Install Oracle Preinstallation RPM
 sudo yum -y install oracle-rdbms-server-12cR1-preinstall
 
@@ -64,6 +56,12 @@ esac
 
 # Set oracle password
 echo oracle:"$ORACLE_PASSWORD" | sudo chpasswd
+
+# Unzip downloaded files
+TEMP_DIR=$(mktemp -d)
+readonly TEMP_DIR
+chmod 755 "$TEMP_DIR"
+printf "%s\n" "${FILES[@]}" | xargs -I{} unzip {} -d "$TEMP_DIR"
 
 # Install Mo (https://github.com/tests-always-included/mo)
 curl -sSL https://git.io/get-mo | sudo tee /usr/local/bin/mo >/dev/null

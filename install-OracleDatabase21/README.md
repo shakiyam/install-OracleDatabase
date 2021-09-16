@@ -18,8 +18,8 @@ Download Oracle Database 21c (21.3) software from [Oracle Database Software Down
 
 * LINUX.X64_213000_db_home.zip
 
-Set environment variables
--------------------------
+Configuration
+-------------
 
 Copy the file `dotenv.sample` to a file named `.env` and rewrite the contents as needed.
 
@@ -31,6 +31,7 @@ ORACLE_EDITION=EE
 ORACLE_HOME=/u01/app/oracle/product/21.3.0/dbhome_1
 ORACLE_PASSWORD=oracle
 ORACLE_PDB=pdb1
+ORACLE_SAMPLESCHEMA=TRUE
 ORACLE_SID=orcl
 ```
 

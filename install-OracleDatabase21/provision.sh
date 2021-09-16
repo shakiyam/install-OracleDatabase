@@ -82,10 +82,12 @@ sudo su - oracle -c "dbca -silent -createDatabase -responseFile $TEMP_DIR/dbca.r
 rm -rf "$TEMP_DIR"
 
 # Install the Sample Schemas
-SAMPLE_DIR=$(mktemp -d)
-readonly SAMPLE_DIR
-chmod 777 "$SAMPLE_DIR"
-cp "$SCRIPT_DIR"/install_sample.sh "$SAMPLE_DIR"/install_sample.sh
-sudo su - oracle -c "$SAMPLE_DIR/install_sample.sh $ORACLE_PASSWORD localhost/$ORACLE_PDB"
-sudo su - oracle -c "rm -rf $SAMPLE_DIR/*"
-rmdir "$SAMPLE_DIR"
+if [[ ${ORACLE_SAMPLESCHEMA^^} == TRUE ]]; then
+  SAMPLE_DIR=$(mktemp -d)
+  readonly SAMPLE_DIR
+  chmod 777 "$SAMPLE_DIR"
+  cp "$SCRIPT_DIR"/install_sample.sh "$SAMPLE_DIR"/install_sample.sh
+  sudo su - oracle -c "$SAMPLE_DIR/install_sample.sh $ORACLE_PASSWORD localhost/$ORACLE_PDB"
+  sudo su - oracle -c "rm -rf $SAMPLE_DIR/*"
+  rmdir "$SAMPLE_DIR"
+fi

@@ -19,8 +19,8 @@ Download Oracle Database 11g Release 2 (11.2.0.4) software from [My Oracle Suppo
 * p13390677_112040_Linux-x86-64_1of7.zip
 * p13390677_112040_Linux-x86-64_2of7.zip
 
-Set environment variables
--------------------------
+Configuration
+-------------
 
 Copy the file `dotenv.sample` to a file named `.env` and rewrite the contents as needed.
 
@@ -31,6 +31,7 @@ ORACLE_CHARACTERSET=AL32UTF8
 ORACLE_EDITION=EE
 ORACLE_HOME=/u01/app/oracle/product/11.2.0.4/dbhome_1
 ORACLE_PASSWORD=oracle
+ORACLE_SAMPLESCHEMA=TRUE
 ORACLE_SID=orcl
 ```
 

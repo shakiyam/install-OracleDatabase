@@ -87,4 +87,5 @@ readonly SAMPLE_DIR
 chmod 777 "$SAMPLE_DIR"
 cp "$SCRIPT_DIR"/install_sample.sh "$SAMPLE_DIR"/install_sample.sh
 sudo su - oracle -c "$SAMPLE_DIR/install_sample.sh $ORACLE_PASSWORD localhost/$ORACLE_PDB"
-rm -rf "$SAMPLE_DIR"
+sudo su - oracle -c "rm -rf $SAMPLE_DIR/*"
+rmdir "$SAMPLE_DIR"

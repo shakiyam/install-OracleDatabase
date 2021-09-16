@@ -47,6 +47,7 @@ When you run `provision.sh`, the following will work internally.
 * Install Oracle Database
 * Create a listener
 * Create a database
+* Install sample schemas
 
 ```console
 ./provision.sh
@@ -63,11 +64,12 @@ sqlplus system/oracle
 SHOW CON_NAME
 ```
 
-Connect to PDB, and confirm the connection.
+Connect to PDB, and access the sample table.
 
 ```console
 sqlplus system/oracle@localhost/pdb1
 SHOW CON_NAME
+SELECT JSON_OBJECT(*) FROM hr.employees WHERE rownum <= 3;
 ```
 
 Author

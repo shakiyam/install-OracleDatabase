@@ -56,12 +56,12 @@ When you run `provision.sh`, the following will work internally.
 Example of use
 --------------
 
-Connect to the database and access the sample table.
+Connect to the database. If you have sample schema installed, browse to the sample table.
 
 ```console
 sudo su - oracle
 sqlplus system/oracle
-SELECT * FROM scott.emp;
+SELECT * FROM scott.emp; # (If you have sample schema installed)
 ```
 
 Author

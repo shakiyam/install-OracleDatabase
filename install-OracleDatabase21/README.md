@@ -70,7 +70,8 @@ Connect to PDB and confirm the connection. If you have sample schemas installed,
 ```console
 sqlplus system/oracle@localhost/pdb1
 SHOW CON_NAME
-SELECT JSON_OBJECT(*) FROM hr.employees WHERE rownum <= 3; # (If you have sample schemas installed)
+-- If you have sample schemas installed
+SELECT JSON_OBJECT(*) FROM hr.employees WHERE rownum <= 3;
 ```
 
 Author

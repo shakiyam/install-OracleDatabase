@@ -61,7 +61,8 @@ Connect to the database. If you have sample schema installed, browse to the samp
 ```console
 sudo su - oracle
 sqlplus system/oracle
-SELECT * FROM scott.emp; # (If you have sample schema installed)
+-- If you have sample schema installed
+SELECT * FROM scott.emp;
 ```
 
 Author

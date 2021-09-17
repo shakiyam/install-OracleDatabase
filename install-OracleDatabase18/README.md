@@ -69,7 +69,8 @@ Connect to PDB and confirm the connection. If you have sample schema installed, 
 ```console
 sqlplus system/oracle@localhost/pdb1
 SHOW CON_NAME
-SELECT * FROM hr.employees WHERE rownum <= 10; # (If you have sample schema installed)
+-- If you have sample schema installed
+SELECT * FROM hr.employees WHERE rownum <= 10;
 ```
 
 Author

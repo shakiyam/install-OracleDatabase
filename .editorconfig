@@ -9,9 +9,5 @@ indent_style = space
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.mustache]
-indent_size = 4
-trim_trailing_whitespace = false
-
 [*.md]
 trim_trailing_whitespace = false

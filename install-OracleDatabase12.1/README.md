@@ -1,7 +1,7 @@
 install-OracleDatabase12.1
 ==========================
 
-Simple installation scripts for Oracle Database 11g Release 2 (12.1.0.2) Enterprise Edition single instance database.
+Simple installation scripts for Oracle Database 12c Release 1 (12.1.0.2) Enterprise Edition single instance database.
 
 Requirements
 ------------
@@ -14,7 +14,7 @@ Please refer to [Database Quick Installation Guide for Linux x86-64](https://doc
 
 ### Oracle Database software ###
 
-Download Oracle Database 11g Release 2 (12.1.0.2) software from [My Oracle Support](https://support.oracle.com/). Then place downloaded files in the $MEDIA folder. (You can set the environment variable $MEDIA to any value you like.)
+Download Oracle Database 12c Release 1 (12.1.0.2) software from [My Oracle Support](https://support.oracle.com/). Then place downloaded files in the $MEDIA folder. (You can set the environment variable $MEDIA to any value you like.)
 
 * p21419221_121020_Linux-x86-64_2of10.zip
 * p21419221_121020_Linux-x86-64_1of10.zip
@@ -64,12 +64,12 @@ sqlplus system/oracle
 SHOW CON_NAME
 ```
 
-Connect to PDB and confirm the connection. If you have sample schema installed, browse to the sample table.
+Connect to PDB and confirm the connection. If you have sample schemas installed, browse to the sample table.
 
 ```console
 sqlplus system/oracle@localhost/pdb1
 SHOW CON_NAME
--- If you have sample schema installed
+-- If you have sample schemas installed
 SELECT * FROM hr.employees WHERE rownum <= 10;
 ```
 

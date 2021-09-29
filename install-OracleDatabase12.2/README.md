@@ -14,7 +14,7 @@ Please refer to [Installation Guide for Linux x86-64](https://docs.oracle.com/en
 
 ### Oracle Database software ###
 
-Download Oracle Database 11g Release 2 (12.1.0.2) software from [Oracle Software Delivery Cloud](https://edelivery.oracle.com/). Then place downloaded file in the $MEDIA folder. (You can set the environment variable $MEDIA to any value you like.)
+Download Oracle Database 12c Release 2 (12.2.0.1) software from [Oracle Software Delivery Cloud](https://edelivery.oracle.com/). Then place downloaded file in the $MEDIA folder. (You can set the environment variable $MEDIA to any value you like.)
 
 * V839960-01.zip
 

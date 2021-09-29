@@ -40,11 +40,11 @@ Provision
 
 When you run `provision.sh`, the following will work internally.
 
-* Unzip downloaded files
-* Install Oracle Preinstallation RPM
+* Install Oracle Preinstallation RPM and unzip
 * Create directories
 * Set environment variables
 * Set password for oracle user
+* Unzip downloaded files
 * Install Oracle Database
 * Create a listener
 * Create a database
@@ -56,13 +56,14 @@ When you run `provision.sh`, the following will work internally.
 Example of use
 --------------
 
-Connect to the database. If you have sample schema installed, browse to the sample table.
+Connect to the database and browse to the sample table.
 
 ```console
 sudo su - oracle
 sqlplus system/oracle
--- If you have sample schema installed
 SELECT * FROM scott.emp;
+-- If you have sample schemas installed
+SELECT * FROM hr.employees WHERE rownum <= 10;
 ```
 
 Author

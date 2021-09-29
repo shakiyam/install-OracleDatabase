@@ -25,8 +25,8 @@ for file in "${FILES[@]}"; do
   fi
 done
 
-# Install Oracle Preinstallation RPM
-sudo yum -y install oracle-rdbms-server-11gR2-preinstall
+# Install Oracle Preinstallation RPM and unzip
+sudo yum -y install oracle-rdbms-server-11gR2-preinstall unzip
 
 # Create directories
 sudo mkdir -p "$ORACLE_BASE"/..
@@ -61,7 +61,6 @@ echo oracle:"$ORACLE_PASSWORD" | sudo chpasswd
 TEMP_DIR=$(mktemp -d)
 readonly TEMP_DIR
 chmod 755 "$TEMP_DIR"
-sudo yum -y install unzip
 printf "%s\n" "${FILES[@]}" | xargs -I{} unzip {} -d "$TEMP_DIR"
 
 # Install Mo (https://github.com/tests-always-included/mo)

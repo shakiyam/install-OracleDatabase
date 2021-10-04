@@ -40,11 +40,11 @@ Provision
 
 When you run `provision.sh`, the following will work internally.
 
-* Unzip downloaded files
 * Install Oracle Preinstallation RPM
 * Create directories
 * Set environment variables
 * Set password for oracle user
+* Unzip downloaded files
 * Install Oracle Database
 * Create a listener
 * Create a database

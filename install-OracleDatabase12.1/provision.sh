@@ -57,10 +57,11 @@ esac
 # Set oracle password
 echo oracle:"$ORACLE_PASSWORD" | sudo chpasswd
 
-# Unzip downloaded files
 TEMP_DIR=$(mktemp -d)
 readonly TEMP_DIR
 chmod 755 "$TEMP_DIR"
+
+# Unzip downloaded files
 printf "%s\n" "${FILES[@]}" | xargs -I{} unzip {} -d "$TEMP_DIR"
 
 # Install Mo (https://github.com/tests-always-included/mo)

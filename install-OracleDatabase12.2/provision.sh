@@ -16,14 +16,11 @@ else
 fi
 set +a
 
-declare -r -a FILES=("$MEDIA/V839960-01.zip")
-
-for file in "${FILES[@]}"; do
-  if [[ ! -f "$file" ]]; then
-    echo "File not found"
-    exit 1
-  fi
-done
+readonly FILE="$MEDIA/V839960-01.zip"
+if [[ ! -f "$FILE" ]]; then
+  echo "$FILE not found"
+  exit 1
+fi
 
 # Install Oracle Preinstallation RPM
 sudo yum -y install oracle-database-server-12cR2-preinstall
@@ -57,11 +54,12 @@ esac
 # Set oracle password
 echo oracle:"$ORACLE_PASSWORD" | sudo chpasswd
 
-# Unzip downloaded file
 TEMP_DIR=$(mktemp -d)
 readonly TEMP_DIR
 chmod 755 "$TEMP_DIR"
-printf "%s\n" "${FILES[@]}" | xargs -I{} unzip {} -d "$TEMP_DIR"
+
+# Unzip downloaded file
+sudo su - oracle -c "unzip -d $ORACLE_HOME $FILE"
 
 # Install Mo (https://github.com/tests-always-included/mo)
 curl -sSL https://git.io/get-mo | sudo tee /usr/local/bin/mo >/dev/null

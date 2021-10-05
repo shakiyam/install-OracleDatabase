@@ -59,7 +59,7 @@ readonly TEMP_DIR
 chmod 755 "$TEMP_DIR"
 
 # Unzip downloaded Oracle Database software
-sudo su - oracle -c "unzip -d $ORACLE_HOME $FILE"
+sudo su - oracle -c "unzip -d $TEMP_DIR $FILE"
 
 # Install Mo (https://github.com/tests-always-included/mo)
 curl -sSL https://git.io/get-mo | sudo tee /usr/local/bin/mo >/dev/null

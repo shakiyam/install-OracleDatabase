@@ -61,7 +61,7 @@ TEMP_DIR=$(mktemp -d)
 readonly TEMP_DIR
 chmod 755 "$TEMP_DIR"
 
-# Unzip downloaded files
+# Unzip downloaded Oracle Database software
 printf "%s\n" "${FILES[@]}" | xargs -I{} unzip {} -d "$TEMP_DIR"
 
 # Install Mo (https://github.com/tests-always-included/mo)

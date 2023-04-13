@@ -14,7 +14,7 @@ Please refer to [Database Quick Installation Guide for Linux x86-64](https://doc
 
 ### Oracle Database software ###
 
-Download Oracle Database 12c Release 1 (12.1.0.2) software from [My Oracle Support](https://support.oracle.com/). Then place downloaded files in the $MEDIA folder. (You can set the environment variable $MEDIA to any value you like.)
+Download Oracle Database 12c Release 1 (12.1.0.2) software from [My Oracle Support](https://support.oracle.com/). Then place the downloaded files in the $MEDIA folder. (You can set the environment variable $MEDIA to any value you like.)
 
 * p21419221_121020_Linux-x86-64_2of10.zip
 * p21419221_121020_Linux-x86-64_1of10.zip
@@ -22,7 +22,7 @@ Download Oracle Database 12c Release 1 (12.1.0.2) software from [My Oracle Suppo
 Configuration
 -------------
 
-Copy the file `dotenv.sample` to a file named `.env` and rewrite the contents as needed.
+Copy the file `dotenv.sample` to a new file named `.env` and modify the contents as needed.
 
 ```shell
 MEDIA=/mnt
@@ -38,7 +38,7 @@ ORACLE_SID=orcl
 Provision
 ---------
 
-When you run `provision.sh`, the following will work internally.
+When you run `provision.sh`, the following will be performed internally.
 
 * Install Oracle Preinstallation RPM
 * Create directories
@@ -53,8 +53,8 @@ When you run `provision.sh`, the following will work internally.
 ./provision.sh
 ```
 
-Example of use
---------------
+Examples of Use
+---------------
 
 Connect to CDB root and confirm the connection.
 

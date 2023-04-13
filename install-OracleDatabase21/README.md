@@ -14,14 +14,14 @@ Please refer to [Installation Guide for Linux x86-64](https://docs.oracle.com/en
 
 ### Oracle Database software ###
 
-Download Oracle Database 21c (21.3) software from [Oracle Database Software Downloads](https://www.oracle.com/database/technologies/oracle-database-software-downloads.html). Then place downloaded file in the $MEDIA folder. (You can set the environment variable $MEDIA to any value you like.)
+Download Oracle Database 21c (21.3) software from [Oracle Database Software Downloads](https://www.oracle.com/database/technologies/oracle-database-software-downloads.html). Then place the downloaded file in the $MEDIA folder. (You can set the environment variable $MEDIA to any value you like.)
 
 * LINUX.X64_213000_db_home.zip
 
 Configuration
 -------------
 
-Copy the file `dotenv.sample` to a file named `.env` and rewrite the contents as needed.
+Copy the file `dotenv.sample` to a new file named `.env` and modify the contents as needed.
 
 ```shell
 MEDIA=/mnt
@@ -38,7 +38,7 @@ ORACLE_SID=orcl
 Provision
 ---------
 
-When you run `provision.sh`, the following will work internally.
+When you run `provision.sh`, the following will be performed internally.
 
 * Install Oracle Preinstallation RPM
 * Create directories
@@ -54,8 +54,8 @@ When you run `provision.sh`, the following will work internally.
 ./provision.sh
 ```
 
-Example of use
---------------
+Examples of Use
+---------------
 
 Connect to CDB root and confirm the connection.
 

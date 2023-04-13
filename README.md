@@ -3,8 +3,8 @@ install-OracleDatabase
 
 Simple installation scripts for Oracle Database.
 
-Target Oracle Database
-----------------------
+Supported Oracle Database Versions
+----------------------------------
 
 * [Oracle Database 11g Release 2 (11.2.0.4)](install-OracleDatabase11.2)
 * [Oracle Database 12c Release 1 (12.1.0.2)](install-OracleDatabase12.1)

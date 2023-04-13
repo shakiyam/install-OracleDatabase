@@ -14,14 +14,14 @@ Please refer to [Installation Guide for Linux x86-64](https://docs.oracle.com/en
 
 ### Oracle Database software ###
 
-Download Oracle Database 12c Release 2 (12.2.0.1) software from [Oracle Software Delivery Cloud](https://edelivery.oracle.com/). Then place downloaded file in the $MEDIA folder. (You can set the environment variable $MEDIA to any value you like.)
+Download Oracle Database 12c Release 2 (12.2.0.1) software from [Oracle Software Delivery Cloud](https://edelivery.oracle.com/). Then place the downloaded file in the $MEDIA folder. (You can set the environment variable $MEDIA to any value you like.)
 
 * V839960-01.zip
 
 Configuration
 -------------
 
-Copy the file `dotenv.sample` to a file named `.env` and rewrite the contents as needed.
+Copy the file `dotenv.sample` to a new file named `.env` and modify the contents as needed.
 
 ```shell
 MEDIA=/mnt
@@ -38,7 +38,7 @@ ORACLE_SID=orcl
 Provision
 ---------
 
-When you run `provision.sh`, the following will work internally.
+When you run `provision.sh`, the following will be performed internally.
 
 * Install Oracle Preinstallation RPM
 * Create directories
@@ -53,8 +53,8 @@ When you run `provision.sh`, the following will work internally.
 ./provision.sh
 ```
 
-Example of use
---------------
+Examples of Use
+---------------
 
 Connect to CDB root and confirm the connection.
 
@@ -64,12 +64,12 @@ sqlplus system/oracle
 SHOW CON_NAME
 ```
 
-Connect to PDB and confirm the connection. If you have sample schema installed, browse to the sample table.
+Connect to PDB and confirm the connection. If you have sample schemas installed, browse to the sample table.
 
 ```console
 sqlplus system/oracle@localhost/pdb1
 SHOW CON_NAME
--- If you have sample schema installed
+-- If you have sample schemas installed
 SELECT * FROM hr.employees WHERE rownum <= 10;
 ```
 

@@ -59,7 +59,7 @@ readonly TEMP_DIR
 chmod 755 "$TEMP_DIR"
 
 # Unzip downloaded Oracle Database software
-unzip -d $TEMP_DIR $FILE
+unzip -d "$TEMP_DIR" "$FILE"
 
 # Install Mo (https://github.com/tests-always-included/mo)
 curl -fL# https://github.com/tests-always-included/mo/archive/refs/tags/3.0.5.tar.gz \

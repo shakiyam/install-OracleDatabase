@@ -49,8 +49,8 @@ chmod 755 "$TEMP_DIR"
 sudo su - oracle -c "unzip -d $ORACLE_HOME $FILE"
 
 # Install Mo (https://github.com/tests-always-included/mo)
-curl -sSL https://git.io/get-mo | sudo tee /usr/local/bin/mo >/dev/null
-sudo chmod +x /usr/local/bin/mo
+curl -fL# https://github.com/tests-always-included/mo/archive/refs/tags/3.0.5.tar.gz \
+  | tar xzf - -O mo-3.0.5/mo | sudo install -m 755 /dev/stdin /usr/local/bin/mo
 
 # Install Oracle Database
 mo "$SCRIPT_DIR"/db_install.rsp.mustache >"$TEMP_DIR"/db_install.rsp

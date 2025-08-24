@@ -1,0 +1,16 @@
+FROM oraclelinux:8
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+# hadolint ignore=DL3041
+RUN dnf -y update \
+  && dnf -y install sudo unzip curl tar \
+  && dnf clean all
+RUN echo "auth sufficient pam_permit.so" >/etc/pam.d/sudo \
+  && echo "account sufficient pam_permit.so" >>/etc/pam.d/sudo \
+  && echo "session sufficient pam_permit.so" >>/etc/pam.d/sudo
+RUN useradd -m -s /bin/bash testuser \
+  && echo "testuser:testuser" | chpasswd \
+  && echo "testuser ALL=(ALL) NOPASSWD: ALL" >/etc/sudoers.d/testuser \
+  && chmod 440 /etc/sudoers.d/testuser
+USER testuser
+WORKDIR /home/testuser
+CMD ["/bin/bash"]

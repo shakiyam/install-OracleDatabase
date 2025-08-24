@@ -1,0 +1,44 @@
+volumes:
+  oracle-media:
+    external: false
+
+services:
+  oracle-linux-7:
+    build:
+      dockerfile: Dockerfile.ol7
+    container_name: oracle-test-ol7
+    hostname: oracle-ol7
+    working_dir: /workspace
+    volumes:
+      - ./:/workspace:ro
+      - ${ORACLE_MEDIA_PATH:-/mnt}:/mnt:ro
+    tmpfs:
+      - /tmp:size=4G,mode=1777,exec
+      - /run:size=1G,mode=0755
+    networks:
+      - oracle-test-net
+    stdin_open: true
+    tty: true
+    privileged: true
+
+  oracle-linux-8:
+    build:
+      dockerfile: Dockerfile.ol8
+    container_name: oracle-test-ol8
+    hostname: oracle-ol8
+    working_dir: /workspace
+    volumes:
+      - ./:/workspace:ro
+      - ${ORACLE_MEDIA_PATH:-/mnt}:/mnt:ro
+    tmpfs:
+      - /tmp:size=4G,mode=1777,exec
+      - /run:size=1G,mode=0755
+    networks:
+      - oracle-test-net
+    stdin_open: true
+    tty: true
+    privileged: true
+
+networks:
+  oracle-test-net:
+    driver: bridge

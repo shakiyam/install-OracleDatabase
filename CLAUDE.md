@@ -40,13 +40,136 @@ sqlplus system/oracle@localhost/pdb1
 SELECT JSON_OBJECT(*) FROM hr.employees WHERE rownum <= 3;
 ```
 
-### Running ShellCheck (Code Quality)
+### Running Code Quality Checks
 
 ```bash
-# Check shell scripts for issues
-shellcheck provision.sh
-shellcheck install_sample.sh  # Oracle 21c only
+# Run all linting (hadolint, shellcheck, shfmt)
+make lint
+
+# Run individual linting tools
+make shellcheck  # Check shell scripts for issues
+make shfmt       # Check shell script formatting
+make hadolint    # Lint Dockerfiles
 ```
+
+### Docker Test Environment
+
+A Docker-based test environment is available for testing Oracle Database installations in isolated containers.
+
+#### Setup
+
+1. Configure Oracle media path:
+```bash
+# Set ORACLE_MEDIA_PATH environment variable (default: /mnt)
+export ORACLE_MEDIA_PATH=/path/to/oracle-media
+```
+
+2. Build Docker images:
+```bash
+make build
+```
+
+#### Installation and Testing
+
+##### Version-specific Installation
+```bash
+# Install Oracle Database versions in containers
+make install-11.2-ol7   # Oracle Database 11g R2 on Oracle Linux 7
+make install-12.1-ol7   # Oracle Database 12c R1 on Oracle Linux 7
+make install-12.2-ol7   # Oracle Database 12c R2 on Oracle Linux 7
+make install-18-ol7     # Oracle Database 18c on Oracle Linux 7
+make install-19-ol7     # Oracle Database 19c on Oracle Linux 7
+make install-19-ol8     # Oracle Database 19c on Oracle Linux 8
+make install-19-arm-ol8 # Oracle Database 19c ARM on Oracle Linux 8
+make install-21-ol8     # Oracle Database 21c on Oracle Linux 8
+```
+
+##### Version-specific Testing
+```bash
+# Test database status after installation
+make test-11.2-ol7   # Test Oracle Database 11g R2 on Oracle Linux 7
+make test-12.1-ol7   # Test Oracle Database 12c R1 on Oracle Linux 7
+make test-12.2-ol7   # Test Oracle Database 12c R2 on Oracle Linux 7
+make test-18-ol7     # Test Oracle Database 18c on Oracle Linux 7
+make test-19-ol7     # Test Oracle Database 19c on Oracle Linux 7
+make test-19-ol8     # Test Oracle Database 19c on Oracle Linux 8
+make test-19-arm-ol8 # Test Oracle Database 19c ARM on Oracle Linux 8
+make test-21-ol8     # Test Oracle Database 21c on Oracle Linux 8
+```
+
+##### Manual Testing
+```bash
+# Enter containers for manual testing
+make shell-ol7  # Enter Oracle Linux 7 container
+make shell-ol8  # Enter Oracle Linux 8 container
+
+# Inside container:
+cd /workspace/install-OracleDatabase19
+cp dotenv.sample .env
+# Edit .env to set MEDIA=/mnt
+sudo ./provision.sh
+```
+
+#### Project Structure
+
+```
+install-OracleDatabase/
+├── Makefile              # Build, test, and linting commands
+├── compose.yml           # Docker Compose configuration
+├── Dockerfile.ol7        # Oracle Linux 7 base image
+├── Dockerfile.ol8        # Oracle Linux 8 base image
+├── test-database.sh      # Database status testing script
+└── install-*/            # Oracle Database installation scripts
+```
+
+#### Available Make Commands
+
+**Container Management**:
+- `make help` - Show all available commands
+- `make build` - Build Docker images
+- `make build-ol7` - Build Oracle Linux 7 image
+- `make build-ol8` - Build Oracle Linux 8 image
+- `make clean` - Clean up all containers, volumes, and networks
+- `make shell-ol7` - Enter Oracle Linux 7 container shell
+- `make shell-ol8` - Enter Oracle Linux 8 container shell
+
+**Installation**:
+- `make install-[version]-[os]` - Install specific Oracle Database version
+
+**Testing**:
+- `make test-[version]-[os]` - Test specific Oracle Database installation
+
+**Code Quality**:
+- `make lint` - Run all linting (hadolint, shellcheck, shfmt)
+- `make hadolint` - Lint Dockerfiles
+- `make shellcheck` - Lint shell scripts
+- `make shfmt` - Lint shell script formatting
+
+#### Testing Matrix
+
+| Oracle Version | Base OS | Container |
+|---------------|---------|-----------|
+| 11g R2 | Oracle Linux 7 | oracle-linux-7 |
+| 12c R1 | Oracle Linux 7 | oracle-linux-7 |
+| 12c R2 | Oracle Linux 7 | oracle-linux-7 |
+| 18c | Oracle Linux 7 | oracle-linux-7 |
+| 19c | Oracle Linux 7/8 | Both |
+| 21c | Oracle Linux 8 | oracle-linux-8 |
+
+#### Prerequisites
+
+- **ShellCheck**: Install from https://github.com/koalaman/shellcheck#installing
+- **shfmt**: Install from https://github.com/mvdan/sh#shfmt
+- **hadolint**: Install from https://github.com/hadolint/hadolint#install
+- **Docker**: Docker or Docker Desktop
+- **Oracle installation media**: Downloaded separately from Oracle's website
+
+#### Notes
+
+- Oracle installation media must be placed in the directory specified by `ORACLE_MEDIA_PATH` environment variable
+- Linting tools (ShellCheck, shfmt, hadolint) must be installed on the host system
+- Containers run with testuser and sudo privileges for testing
+- The Mo tool (Mustache template processor) is installed during provision.sh execution
 
 ## Architecture and Key Components
 

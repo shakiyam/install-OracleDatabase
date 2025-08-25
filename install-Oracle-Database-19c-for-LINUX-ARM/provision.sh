@@ -41,6 +41,19 @@ EOT
 # Set oracle password
 echo oracle:"$ORACLE_PASSWORD" | sudo chpasswd
 
+# Install rlwrap and set alias
+# shellcheck disable=SC1091
+OS_VERSION=$(. /etc/os-release && echo "$VERSION")
+readonly OS_VERSION
+case ${OS_VERSION%%.*} in
+  8)
+    sudo dnf -y --enablerepo=ol8_developer_EPEL install rlwrap
+    sudo tee -a /home/oracle/.bashrc <<EOT >/dev/null
+alias sqlplus='rlwrap sqlplus'
+EOT
+    ;;
+esac
+
 TEMP_DIR=$(mktemp -d)
 readonly TEMP_DIR
 chmod 755 "$TEMP_DIR"

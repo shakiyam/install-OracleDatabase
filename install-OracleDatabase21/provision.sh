@@ -49,6 +49,12 @@ case ${OS_VERSION%%.*} in
 alias sqlplus='rlwrap sqlplus'
 EOT
     ;;
+  8)
+    sudo dnf -y --enablerepo=ol8_developer_EPEL install rlwrap
+    sudo tee -a /home/oracle/.bashrc <<EOT >/dev/null
+alias sqlplus='rlwrap sqlplus'
+EOT
+    ;;
 esac
 
 # Set oracle password

@@ -4,16 +4,15 @@ volumes:
 
 services:
   oracle-linux-7:
-    build:
-      dockerfile: Dockerfile.ol7
+    image: install-oracledatabase-oracle-linux-7
     container_name: oracle-test-ol7
     hostname: oracle-ol7
     working_dir: /workspace
     volumes:
-      - ./:/workspace:ro
+      - ./:/workspace:ro,Z
       - ${ORACLE_MEDIA_PATH:-/mnt}:/mnt:ro
     tmpfs:
-      - /tmp:size=4G,mode=1777,exec
+      - /tmp:size=5G,mode=1777,exec
       - /run:size=1G,mode=0755
     networks:
       - oracle-test-net
@@ -22,16 +21,15 @@ services:
     privileged: true
 
   oracle-linux-8:
-    build:
-      dockerfile: Dockerfile.ol8
+    image: install-oracledatabase-oracle-linux-8
     container_name: oracle-test-ol8
     hostname: oracle-ol8
     working_dir: /workspace
     volumes:
-      - ./:/workspace:ro
+      - ./:/workspace:ro,Z
       - ${ORACLE_MEDIA_PATH:-/mnt}:/mnt:ro
     tmpfs:
-      - /tmp:size=4G,mode=1777,exec
+      - /tmp:size=5G,mode=1777,exec
       - /run:size=1G,mode=0755
     networks:
       - oracle-test-net

@@ -1,13 +1,15 @@
 FROM oraclelinux:7
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # hadolint ignore=DL3033
-RUN yum -y update \
-  && yum -y install sudo unzip curl tar \
-  && yum clean all
-RUN echo "auth sufficient pam_permit.so" >/etc/pam.d/sudo \
+RUN /bin/bash -o pipefail -c 'yum -y update \
+  && yum -y install sudo unzip oracle-epel-release-el7 \
+  && yum clean all' \
+  && echo "auth sufficient pam_permit.so" >/etc/pam.d/sudo \
   && echo "account sufficient pam_permit.so" >>/etc/pam.d/sudo \
-  && echo "session sufficient pam_permit.so" >>/etc/pam.d/sudo
-RUN useradd -m -s /bin/bash testuser \
+  && echo "session sufficient pam_permit.so" >>/etc/pam.d/sudo \
+  && echo "auth sufficient pam_permit.so" >/etc/pam.d/su \
+  && echo "account sufficient pam_permit.so" >>/etc/pam.d/su \
+  && echo "session sufficient pam_permit.so" >>/etc/pam.d/su \
+  && useradd -m -s /bin/bash testuser \
   && echo "testuser:testuser" | chpasswd \
   && echo "testuser ALL=(ALL) NOPASSWD: ALL" >/etc/sudoers.d/testuser \
   && chmod 440 /etc/sudoers.d/testuser

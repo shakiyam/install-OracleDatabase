@@ -79,8 +79,8 @@ make install-12.1-ol7   # Oracle Database 12c R1 on Oracle Linux 7
 make install-12.2-ol7   # Oracle Database 12c R2 on Oracle Linux 7
 make install-18-ol7     # Oracle Database 18c on Oracle Linux 7
 make install-19-ol7     # Oracle Database 19c on Oracle Linux 7
-make install-19-ol8     # Oracle Database 19c on Oracle Linux 8
 make install-19-arm-ol8 # Oracle Database 19c ARM on Oracle Linux 8
+make install-21-ol7     # Oracle Database 21c on Oracle Linux 7
 make install-21-ol8     # Oracle Database 21c on Oracle Linux 8
 ```
 
@@ -92,8 +92,8 @@ make test-12.1-ol7   # Test Oracle Database 12c R1 on Oracle Linux 7
 make test-12.2-ol7   # Test Oracle Database 12c R2 on Oracle Linux 7
 make test-18-ol7     # Test Oracle Database 18c on Oracle Linux 7
 make test-19-ol7     # Test Oracle Database 19c on Oracle Linux 7
-make test-19-ol8     # Test Oracle Database 19c on Oracle Linux 8
 make test-19-arm-ol8 # Test Oracle Database 19c ARM on Oracle Linux 8
+make test-21-ol7     # Test Oracle Database 21c on Oracle Linux 7
 make test-21-ol8     # Test Oracle Database 21c on Oracle Linux 8
 ```
 
@@ -153,15 +153,17 @@ install-OracleDatabase/
 | 12c R1 | Oracle Linux 7 | oracle-linux-7 |
 | 12c R2 | Oracle Linux 7 | oracle-linux-7 |
 | 18c | Oracle Linux 7 | oracle-linux-7 |
-| 19c | Oracle Linux 7/8 | Both |
-| 21c | Oracle Linux 8 | oracle-linux-8 |
+| 19c | Oracle Linux 7 | oracle-linux-7 |
+| 19c ARM | Oracle Linux 8 | oracle-linux-8 |
+| 21c | Oracle Linux 7/8 | Both |
 
 #### Prerequisites
 
 - **ShellCheck**: Install from https://github.com/koalaman/shellcheck#installing
 - **shfmt**: Install from https://github.com/mvdan/sh#shfmt
 - **hadolint**: Install from https://github.com/hadolint/hadolint#install
-- **Docker**: Docker or Docker Desktop
+- **Docker or Podman**: Container runtime (auto-detected)
+- **Docker Compose**: Required for orchestrating containers (docker compose or docker-compose)
 - **Oracle installation media**: Downloaded separately from Oracle's website
 
 #### Notes

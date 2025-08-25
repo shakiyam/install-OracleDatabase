@@ -1,5 +1,5 @@
 FROM oraclelinux:8
-# hadolint ignore=DL3041
+# hadolint ignore=DL3041,DL4006
 RUN /bin/bash -o pipefail -c 'dnf -y update \
   && dnf -y install sudo unzip oracle-epel-release-el8 \
   && dnf clean all' \

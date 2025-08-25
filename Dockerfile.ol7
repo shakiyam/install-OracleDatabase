@@ -1,5 +1,5 @@
 FROM oraclelinux:7
-# hadolint ignore=DL3033
+# hadolint ignore=DL3033,DL4006
 RUN /bin/bash -o pipefail -c 'yum -y update \
   && yum -y install sudo unzip oracle-epel-release-el7 \
   && yum clean all' \

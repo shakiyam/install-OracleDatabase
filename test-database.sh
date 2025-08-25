@@ -1,15 +1,20 @@
 #!/bin/bash
 set -eo pipefail
 
-if [ -e ".env" ]; then
+# Test result counters
+passed=0
+failed=0
+warnings=0
+
+if [[ -e ".env" ]]; then
   # shellcheck source=/dev/null
   . ./.env
-elif [ -e "dotenv.sample" ]; then
+elif [[ -e "dotenv.sample" ]]; then
   # shellcheck source=/dev/null
   . ./dotenv.sample
 fi
 
-if [ -z "${ORACLE_SID}" ] || [ -z "${ORACLE_PASSWORD}" ]; then
+if [[ -z "${ORACLE_SID}" ]] || [[ -z "${ORACLE_PASSWORD}" ]]; then
   echo "❌ ERROR: ORACLE_SID or ORACLE_PASSWORD not set"
   echo "Make sure you're running this from an Oracle installation directory"
   echo "with .env or dotenv.sample file"
@@ -20,7 +25,7 @@ echo "=== Oracle Database Status Test ==="
 
 export ORACLE_SID="${ORACLE_SID}"
 # shellcheck source=/dev/null
-[ -f ~/.bash_profile ] && source ~/.bash_profile
+[[ -f ~/.bash_profile ]] && source ~/.bash_profile
 
 echo ""
 echo "1. Testing Oracle Installation..."
@@ -39,45 +44,64 @@ echo "2. Testing Listener..."
 echo -n "Checking listener status ... "
 if lsnrctl status >/dev/null 2>&1; then
   echo "✅ RUNNING"
+  ((++passed))
 else
   echo "❌ NOT RUNNING"
+  ((++failed))
 fi
 
 echo ""
 echo "3. Testing Database Status..."
 echo -n "Checking database status ... "
 status=$(echo "SELECT status FROM v\$instance;" | sqlplus -s "/ as sysdba" 2>&1 | grep -E "OPEN|MOUNTED|STARTED" | tr -d '[:space:]')
-if [ "${status}" = "OPEN" ]; then
+if [[ "${status}" = "OPEN" ]]; then
   echo "✅ OPEN"
-elif [ -n "${status}" ]; then
+  ((++passed))
+elif [[ -n "${status}" ]]; then
   echo "⚠️  ${status}"
+  ((++warnings))
 else
   echo "❌ NOT RUNNING"
+  ((++failed))
 fi
 
 echo ""
-echo "4. Testing Database Connections..."
+echo "4. Testing Database Connection (system)..."
 echo -n "Testing connection: system ... "
-if result=$(echo "SELECT 'CONNECTION_OK' FROM dual;" | sqlplus -s "system/${ORACLE_PASSWORD}" 2>&1) && echo "${result}" | grep -q "^CONNECTION_OK$"; then
+connection_test_sql="SELECT 'CONNECTION_OK' FROM dual;"
+if result=$(echo "${connection_test_sql}" | sqlplus -s "system/${ORACLE_PASSWORD}" 2>&1) && echo "${result}" | grep -q "^CONNECTION_OK$"; then
   echo "✅ SUCCESS"
+  ((++passed))
 else
   echo "❌ FAILED"
   echo "Error: ${result}" | head -5
-fi
-
-echo -n "Testing connection: / as sysdba ... "
-if result=$(echo "SELECT 'CONNECTION_OK' FROM dual;" | sqlplus -s "/ as sysdba" 2>&1) && echo "${result}" | grep -q "^CONNECTION_OK$"; then
-  echo "✅ SUCCESS"
-else
-  echo "❌ FAILED"
-  echo "Error: ${result}" | head -5
+  ((++failed))
 fi
 
 echo ""
-echo "5. Testing PDB (if exists)..."
-is_cdb=$(echo "SELECT cdb FROM v\$database;" | sqlplus -s "/ as sysdba" 2>&1 | grep -E "YES|NO" | tr -d '[:space:]')
+echo "5. Testing Database Connection (sysdba)..."
+echo -n "Testing connection: / as sysdba ... "
+if result=$(echo "${connection_test_sql}" | sqlplus -s "/ as sysdba" 2>&1) && echo "${result}" | grep -q "^CONNECTION_OK$"; then
+  echo "✅ SUCCESS"
+  ((++passed))
+else
+  echo "❌ FAILED"
+  echo "Error: ${result}" | head -5
+  ((++failed))
+fi
 
-if [ "${is_cdb}" = "YES" ]; then
+echo ""
+echo "6. Testing PDB (if exists)..."
+check_cdb_column_sql="SELECT COUNT(*) FROM user_tab_columns WHERE table_name = 'V\$DATABASE' AND column_name = 'CDB';"
+has_cdb_column=$(echo "${check_cdb_column_sql}" | sqlplus -s "/ as sysdba" | tail -1 | tr -d '[:space:]')
+
+if [[ "${has_cdb_column}" -gt 0 ]]; then
+  is_cdb=$(echo "SELECT cdb FROM v\$database;" | sqlplus -s "/ as sysdba" 2>&1 | grep -E "YES|NO" | tr -d '[:space:]')
+else
+  is_cdb="NO"
+fi
+
+if [[ "${is_cdb}" = "YES" ]]; then
   echo "Container Database (CDB) detected"
 
   pdb_name="${ORACLE_PDB:-PDB1}"
@@ -87,40 +111,49 @@ if [ "${is_cdb}" = "YES" ]; then
   pdb_status=$(echo "SELECT name, open_mode FROM v\$pdbs WHERE name = '${pdb_name_upper}';" | sqlplus -s "/ as sysdba" 2>&1)
   if echo "${pdb_status}" | grep -q "READ WRITE"; then
     echo "✅ OPEN"
+    ((++passed))
   elif echo "${pdb_status}" | grep -q "${pdb_name_upper}"; then
     echo "⚠️  MOUNTED"
+    ((++warnings))
   else
     echo "❌ NOT FOUND"
+    ((++failed))
   fi
 
   echo -n "Testing connection: system@localhost/${pdb_name} ... "
-  if result=$(echo "SELECT 'CONNECTION_OK' FROM dual;" | sqlplus -s "system/${ORACLE_PASSWORD}@localhost/${pdb_name}" 2>&1) && echo "${result}" | grep -q "^CONNECTION_OK$"; then
+  if result=$(echo "${connection_test_sql}" | sqlplus -s "system/${ORACLE_PASSWORD}@localhost/${pdb_name}" 2>&1) && echo "${result}" | grep -q "^CONNECTION_OK$"; then
     echo "✅ SUCCESS"
+    ((++passed))
   else
     echo "❌ FAILED"
     echo "Error: ${result}" | head -5
+    ((++failed))
   fi
 else
-  echo "Non-CDB database (11g or non-CDB 12c)"
+  echo "Non-CDB database"
 fi
 
 echo ""
-echo "6. Testing Sample Schema (if installed)..."
-if [ "${is_cdb}" = "YES" ]; then
+echo "7. Testing Sample Schema (if installed)..."
+hr_schema_check_sql="SELECT table_name FROM dba_tables WHERE owner = 'HR' AND table_name = 'EMPLOYEES';"
+if [[ "${is_cdb}" = "YES" ]]; then
   echo "Checking sample schemas in ${pdb_name_upper}..."
-  if echo "SELECT table_name FROM dba_tables WHERE owner = 'HR' AND table_name = 'EMPLOYEES';" | sqlplus -s "system/${ORACLE_PASSWORD}@localhost/${pdb_name}" 2>&1 | grep -q "EMPLOYEES"; then
+  if echo "${hr_schema_check_sql}" | sqlplus -s "system/${ORACLE_PASSWORD}@localhost/${pdb_name}" 2>&1 | grep -q "EMPLOYEES"; then
     echo "✅ HR schema found in ${pdb_name_upper}"
     echo "Sample query from HR.EMPLOYEES:"
-    echo "SELECT employee_id, first_name, last_name FROM hr.employees WHERE rownum <= 3;" | sqlplus -s "system/${ORACLE_PASSWORD}@localhost/${pdb_name}"
+    sample_query_sql="SELECT employee_id, first_name, last_name FROM hr.employees WHERE rownum <= 3;"
+    echo "${sample_query_sql}" | sqlplus -s "system/${ORACLE_PASSWORD}@localhost/${pdb_name}"
+    ((++passed))
   else
     echo "ℹ️  Sample schemas not installed in ${pdb_name_upper}"
   fi
 else
   echo "Checking sample schemas in non-CDB..."
-  if echo "SELECT table_name FROM dba_tables WHERE owner = 'HR' AND table_name = 'EMPLOYEES';" | sqlplus -s "system/${ORACLE_PASSWORD}" 2>&1 | grep -q "EMPLOYEES"; then
+  if echo "${hr_schema_check_sql}" | sqlplus -s "system/${ORACLE_PASSWORD}" 2>&1 | grep -q "EMPLOYEES"; then
     echo "✅ HR schema found"
     echo "Sample query from HR.EMPLOYEES:"
-    echo "SELECT employee_id, first_name, last_name FROM hr.employees WHERE rownum <= 3;" | sqlplus -s "system/${ORACLE_PASSWORD}"
+    echo "${sample_query_sql}" | sqlplus -s "system/${ORACLE_PASSWORD}"
+    ((++passed))
   else
     echo "ℹ️  Sample schemas not installed"
   fi
@@ -128,7 +161,15 @@ fi
 
 echo ""
 echo "======================================="
-echo "=== Connection Test Summary ==="
-echo "All tests completed successfully!"
-echo "Result: ✅ Database is operational"
-exit 0
+echo "=== Test Summary ==="
+echo "Passed: ${passed}"
+echo "Failed: ${failed}"
+echo "Warnings: ${warnings}"
+echo ""
+if [[ ${failed} -eq 0 ]]; then
+  echo "✅ All critical tests passed"
+  exit 0
+else
+  echo "❌ ${failed} test(s) failed"
+  exit 1
+fi

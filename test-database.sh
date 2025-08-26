@@ -136,12 +136,12 @@ fi
 echo ""
 echo "7. Testing Sample Schema (if installed)..."
 hr_schema_check_sql="SELECT table_name FROM dba_tables WHERE owner = 'HR' AND table_name = 'EMPLOYEES';"
+sample_query_sql="SELECT employee_id, first_name, last_name FROM hr.employees WHERE rownum <= 3;"
 if [[ "${is_cdb}" = "YES" ]]; then
   echo "Checking sample schemas in ${pdb_name_upper}..."
   if echo "${hr_schema_check_sql}" | sqlplus -s "system/${ORACLE_PASSWORD}@localhost/${pdb_name}" 2>&1 | grep -q "EMPLOYEES"; then
     echo "✅ HR schema found in ${pdb_name_upper}"
     echo "Sample query from HR.EMPLOYEES:"
-    sample_query_sql="SELECT employee_id, first_name, last_name FROM hr.employees WHERE rownum <= 3;"
     echo "${sample_query_sql}" | sqlplus -s "system/${ORACLE_PASSWORD}@localhost/${pdb_name}"
     ((++passed))
   else

@@ -1,7 +1,7 @@
 FROM oraclelinux:7
 # hadolint ignore=DL3033,DL4006
 RUN /bin/bash -o pipefail -c 'yum -y update \
-  && yum -y install sudo unzip oracle-epel-release-el7 \
+  && yum -y install sudo \
   && yum clean all' \
   && echo "auth sufficient pam_permit.so" >/etc/pam.d/sudo \
   && echo "account sufficient pam_permit.so" >>/etc/pam.d/sudo \

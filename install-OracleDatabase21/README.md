@@ -21,15 +21,33 @@ Download Oracle Database 21c (21.3) software from [Oracle Database Software Down
 Configuration
 -------------
 
-Copy the file `dotenv.sample` to a new file named `.env` and modify the contents as needed.
+**⚠️ IMPORTANT**: Always create a `.env` file before running provision.sh. 
+Running without `.env` will use weak default passwords from `dotenv.sample`, creating a serious security risk.
 
+Create a secure `.env` file from the sample with proper permissions:
+
+```shell
+# Create .env with restricted permissions (owner read/write only)
+cp dotenv.sample .env
+chmod 600 .env
+
+# Edit the file and set a strong password (DO NOT use default 'oracle')
+vi .env
+```
+
+**Security Note**: The `.env` file contains sensitive information. Always:
+- Set file permissions to `600` (owner read/write only)
+- Use strong, unique passwords (avoid default 'oracle')
+- Never commit `.env` to version control (already in .gitignore)
+
+Example configuration:
 ```shell
 MEDIA=/mnt
 ORACLE_BASE=/u01/app/oracle
 ORACLE_CHARACTERSET=AL32UTF8
 ORACLE_EDITION=EE
 ORACLE_HOME=/u01/app/oracle/product/21.3.0/dbhome_1
-ORACLE_PASSWORD=oracle
+ORACLE_PASSWORD=CHANGE_THIS_TO_STRONG_PASSWORD
 ORACLE_PDB=pdb1
 ORACLE_SAMPLESCHEMA=TRUE
 ORACLE_SID=orcl

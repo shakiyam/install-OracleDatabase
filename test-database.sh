@@ -30,7 +30,7 @@ export ORACLE_SID="${ORACLE_SID}"
 echo ""
 echo "1. Testing Oracle Installation..."
 echo -n "Checking if Oracle Database is installed ... "
-if command -v sqlplus >/dev/null 2>&1; then
+if command -v sqlplus &>/dev/null; then
   echo "✅ FOUND"
 else
   echo "❌ NOT FOUND"
@@ -42,7 +42,7 @@ fi
 echo ""
 echo "2. Testing Listener..."
 echo -n "Checking listener status ... "
-if lsnrctl status >/dev/null 2>&1; then
+if lsnrctl status &>/dev/null; then
   echo "✅ RUNNING"
   ((++passed))
 else
@@ -53,7 +53,7 @@ fi
 echo ""
 echo "3. Testing Database Status..."
 echo -n "Checking database status ... "
-status=$(echo "SELECT status FROM v\$instance;" | sqlplus -s "/ as sysdba" 2>&1 | grep -E "OPEN|MOUNTED|STARTED" | tr -d '[:space:]')
+status=$(echo "SELECT status FROM v\$instance;" | sqlplus -s "/ as sysdba" |& grep -E "OPEN|MOUNTED|STARTED" | tr -d '[:space:]')
 if [[ "${status}" = "OPEN" ]]; then
   echo "✅ OPEN"
   ((++passed))
@@ -92,13 +92,11 @@ fi
 
 echo ""
 echo "6. Testing PDB (if exists)..."
-check_cdb_column_sql="SELECT COUNT(*) FROM user_tab_columns WHERE table_name = 'V\$DATABASE' AND column_name = 'CDB';"
-has_cdb_column=$(echo "${check_cdb_column_sql}" | sqlplus -s "/ as sysdba" | tail -1 | tr -d '[:space:]')
-
-if [[ "${has_cdb_column}" -gt 0 ]]; then
-  is_cdb=$(echo "SELECT cdb FROM v\$database;" | sqlplus -s "/ as sysdba" 2>&1 | grep -E "YES|NO" | tr -d '[:space:]')
-else
+is_cdb=$(echo "SELECT cdb FROM v\$database;" | sqlplus -s "/ as sysdba" 2>&1)
+if echo "${is_cdb}" | grep -q "ORA-00904"; then
   is_cdb="NO"
+else
+  is_cdb=$(echo "${is_cdb}" | grep -E "YES|NO" | tr -d '[:space:]')
 fi
 
 if [[ "${is_cdb}" = "YES" ]]; then
@@ -139,7 +137,7 @@ hr_schema_check_sql="SELECT table_name FROM dba_tables WHERE owner = 'HR' AND ta
 sample_query_sql="SELECT employee_id, first_name, last_name FROM hr.employees WHERE rownum <= 3;"
 if [[ "${is_cdb}" = "YES" ]]; then
   echo "Checking sample schemas in ${pdb_name_upper}..."
-  if echo "${hr_schema_check_sql}" | sqlplus -s "system/${ORACLE_PASSWORD}@localhost/${pdb_name}" 2>&1 | grep -q "EMPLOYEES"; then
+  if echo "${hr_schema_check_sql}" | sqlplus -s "system/${ORACLE_PASSWORD}@localhost/${pdb_name}" |& grep -q "EMPLOYEES"; then
     echo "✅ HR schema found in ${pdb_name_upper}"
     echo "Sample query from HR.EMPLOYEES:"
     echo "${sample_query_sql}" | sqlplus -s "system/${ORACLE_PASSWORD}@localhost/${pdb_name}"
@@ -149,7 +147,7 @@ if [[ "${is_cdb}" = "YES" ]]; then
   fi
 else
   echo "Checking sample schemas in non-CDB..."
-  if echo "${hr_schema_check_sql}" | sqlplus -s "system/${ORACLE_PASSWORD}" 2>&1 | grep -q "EMPLOYEES"; then
+  if echo "${hr_schema_check_sql}" | sqlplus -s "system/${ORACLE_PASSWORD}" |& grep -q "EMPLOYEES"; then
     echo "✅ HR schema found"
     echo "Sample query from HR.EMPLOYEES:"
     echo "${sample_query_sql}" | sqlplus -s "system/${ORACLE_PASSWORD}"

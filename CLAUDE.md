@@ -118,8 +118,11 @@ install-OracleDatabase/
 ├── compose.yml           # Docker Compose configuration
 ├── Dockerfile.ol7        # Oracle Linux 7 base image
 ├── Dockerfile.ol8        # Oracle Linux 8 base image
-├── test-database.sh      # Database status testing script
-└── install-*/            # Oracle Database installation scripts
+├── test-database.sh      # Database status testing script (validates DB installation)
+├── CLAUDE.md             # AI assistant instructions for Claude Code
+├── README.md             # Main project documentation
+├── LICENSE               # Project license
+└── install-*/            # Oracle Database installation scripts for each version
 ```
 
 #### Available Make Commands
@@ -147,15 +150,15 @@ install-OracleDatabase/
 
 #### Testing Matrix
 
-| Oracle Version | Base OS | Container |
-|---------------|---------|-----------|
-| 11g R2 | Oracle Linux 7 | oracle-linux-7 |
-| 12c R1 | Oracle Linux 7 | oracle-linux-7 |
-| 12c R2 | Oracle Linux 7 | oracle-linux-7 |
-| 18c | Oracle Linux 7 | oracle-linux-7 |
-| 19c | Oracle Linux 7 | oracle-linux-7 |
-| 19c ARM | Oracle Linux 8 | oracle-linux-8 |
-| 21c | Oracle Linux 7/8 | Both |
+| Oracle Version | Base OS | Container Image |
+|---------------|---------|-----------------|
+| 11g R2 | Oracle Linux 7 | install-oracledatabase-oracle-linux-7 |
+| 12c R1 | Oracle Linux 7 | install-oracledatabase-oracle-linux-7 |
+| 12c R2 | Oracle Linux 7 | install-oracledatabase-oracle-linux-7 |
+| 18c | Oracle Linux 7 | install-oracledatabase-oracle-linux-7 |
+| 19c | Oracle Linux 7 | install-oracledatabase-oracle-linux-7 |
+| 19c ARM | Oracle Linux 8 | install-oracledatabase-oracle-linux-8 |
+| 21c | Oracle Linux 7/8 | Both images |
 
 #### Prerequisites
 
@@ -194,6 +197,8 @@ The scripts use a `.env` file (created from `dotenv.sample`) with these key vari
 - `ORACLE_PDB` - Pluggable database name
 - `ORACLE_PASSWORD` - System passwords
 - `ORACLE_SAMPLESCHEMA` - Whether to install sample schemas
+- `ORACLE_CHARACTERSET` - Database character set (typically AL32UTF8)
+- `ORACLE_EDITION` - Oracle Database edition (EE, SE2, etc.)
 
 ### Template Processing
 

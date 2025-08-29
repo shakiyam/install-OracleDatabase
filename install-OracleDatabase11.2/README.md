@@ -40,14 +40,18 @@ Provision
 
 When you run `provision.sh`, the following will be performed internally.
 
-* Install Oracle Preinstallation RPM and unzip
-* Create directories
-* Set environment variables
-* Set password for oracle user
-* Unzip downloaded Oracle Database software
-* Install Oracle Database
-* Create a listener
-* Create a database
+* Loading environment configuration
+* Checking Oracle installation media
+* Installing Oracle Preinstallation RPM and unzip
+* Creating Oracle directories
+* Setting Oracle environment variables
+* Installing rlwrap for SQL*Plus
+* Setting oracle user password
+* Extracting Oracle Database software
+* Installing Mo template processor
+* Installing Oracle Database
+* Creating Oracle Net Listener
+* Creating database
 
 ```console
 ./provision.sh

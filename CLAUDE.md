@@ -118,6 +118,7 @@ install-OracleDatabase/
 ├── compose.yml           # Docker Compose configuration
 ├── Dockerfile.ol7        # Oracle Linux 7 base image
 ├── Dockerfile.ol8        # Oracle Linux 8 base image
+├── setup-swap.sh         # Host swap space setup script for Oracle requirements
 ├── test-database.sh      # Database status testing script (validates DB installation)
 ├── CLAUDE.md             # AI assistant instructions for Claude Code
 ├── README.md             # Main project documentation
@@ -127,8 +128,13 @@ install-OracleDatabase/
 
 #### Available Make Commands
 
-**Container Management**:
+**General**:
 - `make help` - Show all available commands
+
+**Host Environment Setup**:
+- `make setup-swap` - Setup swap space for Oracle installation (default: 2048MB)
+
+**Container Management**:
 - `make build` - Build Docker images
 - `make build-ol7` - Build Oracle Linux 7 image
 - `make build-ol8` - Build Oracle Linux 8 image

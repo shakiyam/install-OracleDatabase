@@ -36,6 +36,9 @@ endif
 	@echo "Available targets:"
 	@awk 'BEGIN {FS = ":.*?## "} /^[0-9A-Za-z_.-]+:.*?## / {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
+setup-swap: ## Setup swap space for Oracle installation (default: 2048MB)
+	@sudo ./setup-swap.sh 2048
+
 build: build-ol7 build-ol8 ## Build Docker images
 
 build-ol7: ## Build Oracle Linux 7 image

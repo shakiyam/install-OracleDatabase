@@ -56,11 +56,11 @@ lint: hadolint shellcheck shfmt ## Run all linting (hadolint, shellcheck, shfmt)
 
 shellcheck: ## Lint shell scripts
 	@echo -e "\033[36m$@\033[0m"
-	@shellcheck **/*.sh
+	@find . -type f -name "*.sh" -exec shellcheck {} +
 
 shfmt: ## Lint shell script formatting
 	@echo -e "\033[36m$@\033[0m"
-	@shfmt -l -d -i 2 -ci -bn **/*.sh
+	@find . -type f -name "*.sh" -exec shfmt -l -d -i 2 -ci -bn {} +
 
 install-11.2-ol7: ## Install Oracle Database 11g R2 on Oracle Linux 7
 	@$(DOCKER_COMPOSE) up -d oracle-linux-7

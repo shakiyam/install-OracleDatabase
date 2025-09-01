@@ -6,7 +6,7 @@ Simple installation scripts for Oracle Database 21c (21.3) single instance datab
 Requirements
 ------------
 
-### Oracle Linux Server 7 ###
+### Oracle Linux Server 7 or 8 ###
 
 Internet access is required to install the software from GitHub and Oracle Linux Yum Server.
 

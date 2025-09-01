@@ -11,6 +11,7 @@ Supported Oracle Database Versions
 * [Oracle Database 12c Release 2 (12.2.0.1)](install-OracleDatabase12.2)
 * [Oracle Database 18c (18.3)](install-OracleDatabase18)
 * [Oracle Database 19c (19.3)](install-OracleDatabase19)
+* [Oracle Database 19c for Linux ARM (19.19)](install-Oracle-Database-19c-for-LINUX-ARM)
 * [Oracle Database 21c (21.3)](install-OracleDatabase21)
 
 Author

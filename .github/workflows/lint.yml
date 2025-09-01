@@ -1,0 +1,46 @@
+name: Lint
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  hadolint:
+    name: hadolint (${{ matrix.dockerfile }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dockerfile: [Dockerfile.ol7, Dockerfile.ol8]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Run hadolint on ${{ matrix.dockerfile }}
+        uses: hadolint/hadolint-action@v3
+        with:
+          dockerfile: ${{ matrix.dockerfile }}
+
+  shellcheck:
+    name: ShellCheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Run ShellCheck
+        run: find . -type f -name "*.sh" -exec shellcheck {} +
+
+  shfmt:
+    name: shfmt
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Run shfmt
+        uses: luizm/action-sh-checker@v2
+        env:
+          SHFMT_OPTS: -l -d -i 2 -ci -bn
+        with:
+          sh_checker_shellcheck_disable: true
